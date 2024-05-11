@@ -11,7 +11,7 @@ export const getUsers = async (req, res) => {
     res.json(result);
   }catch(error){
       return res.status(500).json({
-        "message": "Something went wrong :("
+        "message": "Something went wrong"
       })
   }
 };
@@ -49,7 +49,7 @@ export const createUser = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong :(",
+      message: "Something went wrong",
     });
   }
 }
@@ -72,7 +72,7 @@ export const updateUser = async (req, res) => {
     res.json(user[0]);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong :(",
+      message: "Something went wrong",
     });
   }
 };
@@ -91,7 +91,7 @@ export const deleteUser = async (req, res) => {
     res.status(204);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong :(",
+      message: "Something went wrong",
     });
   }
 };
