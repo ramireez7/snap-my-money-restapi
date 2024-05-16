@@ -1,30 +1,30 @@
 import {pool} from "../db.js";
 
-export const getUsers = async (req, res) => {
+export const getGoalCategories = async (req, res) => {
   try{
-    const [result] = await pool.query("SELECT * FROM user");
+    const [result] = await pool.query("SELECT * FROM goal_category");
     if (result.length <= 0) {
       return res.status(401).json({
-        message: "No users were found"
+        message: "No goal categories were found"
       });
     }
     res.json(result);
   }catch(error){
       return res.status(500).json({
-        "message": "Something went wrong: " + error
+        message: "Something went wrong: " + error
       })
   }
 };
 
-export const getUser = async (req, res) => {
+export const getGoalCategory = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM user WHERE id = ?",
+      "SELECT * FROM goal_category WHERE id = ?",
       req.params.id
     );
     if (result.length <= 0) {
       return res.status(404).json({
-        message: "User not found",
+        message: "Goal category not found",
       });
     }
     res.json(result[0]);
@@ -35,17 +35,17 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
+export const createGoalCategory = async (req, res) => {
   try {
-    const { name, balance } = req.body;
+    const { name, userId } = req.body;
     const [result] = await pool.query(
-      "INSERT INTO user (name, balance) VALUES (?, ?)",
-      [name, balance]
+      "INSERT INTO goal_category (name, user_id) VALUES (?, ?)",
+      [name, userId]
     );
     res.send({
       id: result.insertId,
       name,
-      balance,
+      userId
     });
   } catch (error) {
     return res.status(500).json({
@@ -54,22 +54,22 @@ export const createUser = async (req, res) => {
   }
 }
 
-export const updateUser = async (req, res) => {
+export const updateGoalCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, balance } = req.body;
+    const { name, userId } = req.body;
     const [result] = await pool.query(
-      "UPDATE user SET name = IFNULL(?, name), balance = IFNULL(?, balance) WHERE id = ?",
-      [name, balance, id]
+      "UPDATE goal_category SET name = IFNULL(?, name), user_id = IFNULL(?, user_id) WHERE id = ?",
+      [name, userId, id]
     );
     if (result.affectedRows <= 0) {
       return res.status(404).json({
-        message: "User not found",
+        message: "Goal category not found",
       });
     }
 
-    const [user] = await pool.query("SELECT * FROM user WHERE id = ?", id);
-    res.json(user[0]);
+    const [goalCategory] = await pool.query("SELECT * FROM goal_category WHERE id = ?", id);
+    res.json(goalCategory[0]);
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",
@@ -77,15 +77,15 @@ export const updateUser = async (req, res) => {
   }
 };
 
-export const deleteUser = async (req, res) => {
+export const deleteGoalCategory = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "DELETE FROM user WHERE id = ?",
+      "DELETE FROM goal_category WHERE id = ?",
       req.params.id
     );
     if (result.affectedRows <= 0) {
       return res.status(404).json({
-        message: "User not found",
+        message: "Goal category not found",
       });
     }
     res.status(204);

@@ -1,30 +1,30 @@
-import {pool} from "../db.js";
+import { pool } from "../db.js";
 
-export const getUsers = async (req, res) => {
-  try{
-    const [result] = await pool.query("SELECT * FROM user");
+export const getTransactionTypes = async (req, res) => {
+  try {
+    const [result] = await pool.query("SELECT * FROM transaction_type");
     if (result.length <= 0) {
       return res.status(401).json({
-        message: "No users were found"
+        message: "No transaction categories were found",
       });
     }
     res.json(result);
-  }catch(error){
-      return res.status(500).json({
-        "message": "Something went wrong: " + error
-      })
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong: " + error,
+    });
   }
 };
 
-export const getUser = async (req, res) => {
+export const getTransactionType = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM user WHERE id = ?",
+      "SELECT * FROM transaction_type WHERE id = ?",
       req.params.id
     );
     if (result.length <= 0) {
       return res.status(404).json({
-        message: "User not found",
+        message: "Transaction type not found",
       });
     }
     res.json(result[0]);
@@ -35,41 +35,17 @@ export const getUser = async (req, res) => {
   }
 };
 
-export const createUser = async (req, res) => {
+export const createTransactionType = async (req, res) => {
   try {
-    const { name, balance } = req.body;
+    const { name } = req.body;
     const [result] = await pool.query(
-      "INSERT INTO user (name, balance) VALUES (?, ?)",
-      [name, balance]
+      "INSERT INTO transaction_type (name) VALUES (?)",
+      [name]
     );
     res.send({
       id: result.insertId,
       name,
-      balance,
     });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Something went wrong",
-    });
-  }
-}
-
-export const updateUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, balance } = req.body;
-    const [result] = await pool.query(
-      "UPDATE user SET name = IFNULL(?, name), balance = IFNULL(?, balance) WHERE id = ?",
-      [name, balance, id]
-    );
-    if (result.affectedRows <= 0) {
-      return res.status(404).json({
-        message: "User not found",
-      });
-    }
-
-    const [user] = await pool.query("SELECT * FROM user WHERE id = ?", id);
-    res.json(user[0]);
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",
@@ -77,15 +53,41 @@ export const updateUser = async (req, res) => {
   }
 };
 
-export const deleteUser = async (req, res) => {
+export const updateTransactionType = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    const [result] = await pool.query(
+      "UPDATE transaction_type SET name = IFNULL(?, name) WHERE id = ?",
+      [name, id]
+    );
+    if (result.affectedRows <= 0) {
+      return res.status(404).json({
+        message: "Transaction type not found",
+      });
+    }
+
+    const [transactionType] = await pool.query(
+      "SELECT * FROM transaction_type WHERE id = ?",
+      id
+    );
+    res.json(transactionType[0]);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
+};
+
+export const deleteTransactionType = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "DELETE FROM user WHERE id = ?",
+      "DELETE FROM transaction_type WHERE id = ?",
       req.params.id
     );
     if (result.affectedRows <= 0) {
       return res.status(404).json({
-        message: "User not found",
+        message: "Transaction type not found",
       });
     }
     res.status(204);
