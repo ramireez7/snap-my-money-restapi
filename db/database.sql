@@ -123,9 +123,9 @@ CREATE TABLE transaction (
     FOREIGN KEY (transaction_category_id) REFERENCES transaction_category (id)
 );
 
-/* TABLE goal_category */
+/* TABLE target_category */
 
-CREATE TABLE goal_category (
+CREATE TABLE target_category (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
     user_id INT(11) DEFAULT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE goal_category (
 );
 
 INSERT INTO
-    goal_category (name, user_id)
+    target_category (name, user_id)
 VALUES ('Viajes', NULL),
     ('Vehículos', NULL),
     ('Educación', NULL),
@@ -142,14 +142,14 @@ VALUES ('Viajes', NULL),
     ('Inmuebles', NULL),
     ('Otros', NULL);
 
-  CREATE TABLE goal (
+  CREATE TABLE target (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
     user_id INT(11) DEFAULT NULL,
-    goal_category_id INT(11) DEFAULT NULL,
+    target_category_id INT(11) DEFAULT NULL,
     current_amount DECIMAL(10,2),
     target_amount DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user (id),
-    FOREIGN KEY (goal_category_id) REFERENCES goal_category (id)
+    FOREIGN KEY (target_category_id) REFERENCES target_category (id)
   );
