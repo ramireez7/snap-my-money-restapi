@@ -8,19 +8,22 @@ USE snap_my_money;
 CREATE TABLE user (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
+    email VARCHAR(254) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    avatar VARCHAR(255) NULL,
     balance DECIMAL DEFAULT NULL,
     PRIMARY KEY (id)
 );
 
 INSERT INTO
-    user (name, balance)
-VALUES ("Daniel", 1000),
-    ("Marcos", 800),
-    ("Alejandro", 2000),
-    ("Noah", 3000);
+    user (name, email, password, avatar, balance)
+VALUES ('Daniel', 'daniel.ramirez.tomas@gmail.com', '$2a$10$4FfIY0G3Oj.4nuzmoV3YZeszW2dTli5cdd/Wd1QUbU5T1cp142QMm', NULL, NULL),
+    ('Marcos', 'marcos@gmail.com', '$2a$10$9jJcSslPBfPWEXGG8Vw/7.vE9kZK/hStMokSmMNCzKId.bttGzFFS', NULL, NULL),
+    ('Noah', 'noah@gmail.com', '$2a$10$pM2.GuQ/qfXNauXVHm6BFed5xe8.oyD8Tn3Ah01bHLwQTTFWdFmMq', NULL, NULL),
+    ('Alejandro', 'alejandro@gmail.com', '$2a$10$qXeFCtfvo1tPsGIbULn52.eW6.gg16ABN.Uhviy7N4j46KbcNRgEW', NULL, NULL);
+    
 
-    /* TABLE transaction_type */
-
+/* TABLE transaction_type */
 CREATE TABLE transaction_type (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
@@ -57,62 +60,12 @@ VALUES ('Comida y bebida', NULL),
     ('Inversiones', NULL),
     ('Compras', NULL);
 
-/* TABLE transaction_subcategory */
-
-CREATE TABLE transaction_subcategory (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    name VARCHAR(45) NOT NULL,
-    user_id INT(11) DEFAULT NULL,
-    transaction_category_id INT(11) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (transaction_category_id) REFERENCES transaction_category (id),
-    FOREIGN KEY (user_id) REFERENCES user (id)
-);
-
-INSERT INTO
-    transaction_subcategory (
-        name,
-        user_id,
-        transaction_category_id
-    )
-VALUES ('Bar, restaurante', NULL, 1),
-    ('Comida rápida', NULL, 1),
-    ('Supermercados', NULL, 1),
-    ('Larga distancia', NULL, 2),
-    ('Taxi', NULL, 2),
-    ('Transporte público', NULL, 2),
-    ('Alquiler', NULL, 3),
-    ('Hipoteca', NULL, 3),
-    (
-        'Gastos generales de vivienda',
-        NULL,
-        3
-    ),
-    ('Compra', NULL, 4),
-    ('Reparaciones', NULL, 4),
-    ('Combustible', NULL, 4),
-    ('Entretenimiento', NULL, 5),
-    ('Salidas', NULL, 5),
-    ('Cine', NULL, 5),
-    ('Deportes', NULL, 5),
-    ('Teléfono', NULL, 6),
-    ('Internet', NULL, 6),
-    ('Televisión', NULL, 6),
-    ('Hardware', NULL, 7),
-    ('Software', NULL, 7),
-    ('Accesorios', NULL, 7),
-    ('Acciones', NULL, 8),
-    ('Fondos mutuos', NULL, 8),
-    ('Criptomonedas', NULL, 8),
-    ('Ropa', NULL, 9),
-    ('Electrodomésticos', NULL, 9),
-    ('Otros', NULL, 9);
-
 /* TABLE transaction */
 
 CREATE TABLE transaction (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
     user_id INT(11) NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     transaction_type_id INT(11) NULL,
@@ -122,6 +75,13 @@ CREATE TABLE transaction (
     FOREIGN KEY (transaction_type_id) REFERENCES transaction_type (id),
     FOREIGN KEY (transaction_category_id) REFERENCES transaction_category (id)
 );
+
+INSERT INTO transaction (name, user_id, amount, transaction_type_id, transaction_category_id)
+VALUES
+('Compra de libros', 1, 25.00, 1, 9),
+('Pago de servicios', 1, 80.00, 1, 6),
+('Ingreso por freelance', 1, 300.00, 2, NULL);
+
 
 /* TABLE target_category */
 
@@ -145,7 +105,8 @@ VALUES ('Viajes', NULL),
   CREATE TABLE target (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
-    user_id INT(11) DEFAULT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    user_id INT(11) NOT NULL,
     target_category_id INT(11) DEFAULT NULL,
     current_amount DECIMAL(10,2),
     target_amount DECIMAL(10, 2) NOT NULL,
@@ -153,3 +114,9 @@ VALUES ('Viajes', NULL),
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (target_category_id) REFERENCES target_category (id)
   );
+
+INSERT INTO target (name, user_id, target_category_id, current_amount, target_amount)
+VALUES
+('Viaje al extranjero', 1, 1, 200.00, 1000.00),
+('Fondo de emergencia', 1, 4, 50.00, 500.00),
+('Ahorro para un nuevo portátil', 1, 6, 100.00, 800.00);

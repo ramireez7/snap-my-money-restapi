@@ -3,6 +3,7 @@ import {
   createTransactionCategory,
   deleteTransactionCategory,
   getTransactionCategories,
+  getTransactionCategoriesByUserId,
   getTransactionCategory,
   updateTransactionCategory,
 } from "../controllers/transactionCategory.controller.js";
@@ -10,6 +11,8 @@ import {
 const router = Router();
 
 router.get("/transactionCategories", getTransactionCategories);
+
+router.get("/transactionCategories/user/:userId", getTransactionCategoriesByUserId);
 
 router.get("/transactionCategories/:id", getTransactionCategory);
 

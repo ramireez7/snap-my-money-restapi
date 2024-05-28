@@ -1,18 +1,37 @@
-import {pool} from "../db.js";
+import { pool } from "../db.js";
 
 export const getTargets = async (req, res) => {
-  try{
+  try {
     const [result] = await pool.query("SELECT * FROM target");
     if (result.length <= 0) {
       return res.status(401).json({
-        message: "No targets were found"
+        message: "No targets were found",
       });
     }
-    res.json(result);
-  }catch(error){
-      return res.status(500).json({
-        "message": "Something went wrong: " + error
-      })
+    res.json({ targets: result });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong: " + error,
+    });
+  }
+};
+
+export const getTargetsByUserId = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM target where user_id = ?",
+      req.params.userId
+    );
+    if (result.length <= 0) {
+      return res.status(401).json({
+        message: "No targets were found",
+      });
+    }
+    res.json({ targets: result });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong: " + error,
+    });
   }
 };
 
@@ -27,7 +46,7 @@ export const getTarget = async (req, res) => {
         message: "Target not found",
       });
     }
-    res.json(result[0]);
+    res.json({ target: result[0] });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong :(",
@@ -37,32 +56,32 @@ export const getTarget = async (req, res) => {
 
 export const createTarget = async (req, res) => {
   try {
-    const { name, userId, targetCategoryId, targetAmount } = req.body;
+    const { name, userId, categoryId, targetAmount } = req.body;
     const [result] = await pool.query(
       "INSERT INTO target (name, user_id, target_category_id, target_amount) VALUES (?, ?, ?, ?)",
-      [name, userId, targetCategoryId, targetAmount]
+      [name, userId, categoryId, targetAmount]
     );
     res.send({
       id: result.insertId,
       name,
       userId,
-      targetCategoryId,
-      targetAmount
+      categoryId,
+      targetAmount,
     });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",
     });
   }
-}
+};
 
 export const updateTarget = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, userId, targetCategoryId, targetAmount } = req.body;
+    const { name, userId, categoryId, targetAmount } = req.body;
     const [result] = await pool.query(
       "UPDATE target SET name = IFNULL(?, name), user_id = IFNULL(?, user_id), target_category_id = IFNULL(?, target_category_id), target_amount = IFNULL(?, target_amount) WHERE id = ?",
-      [name, userId, targetCategoryId, targetAmount, id]
+      [name, userId, categoryId, targetAmount, id]
     );
     if (result.affectedRows <= 0) {
       return res.status(404).json({
@@ -71,7 +90,7 @@ export const updateTarget = async (req, res) => {
     }
 
     const [target] = await pool.query("SELECT * FROM target WHERE id = ?", id);
-    res.json(target[0]);
+    res.json({ taget: target[0] });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",

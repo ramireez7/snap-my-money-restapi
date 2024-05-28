@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { createTarget, deleteTarget, getTargets, getTarget, updateTarget } from "../controllers/target.controller.js";
+import { createTarget, deleteTarget, getTargets, getTarget, updateTarget, getTargetsByUserId } from "../controllers/target.controller.js";
 
 const router = Router();
 
 router.get("/targets", getTargets);
+
+router.get("/targets/user/:userId", getTargetsByUserId);
 
 router.get("/targets/:id", getTarget);
 

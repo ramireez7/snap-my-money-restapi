@@ -8,7 +8,7 @@ export const getTransactionTypes = async (req, res) => {
         message: "No transaction categories were found",
       });
     }
-    res.json(result);
+    res.json({ transactionTypes: result });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong: " + error,
@@ -27,7 +27,7 @@ export const getTransactionType = async (req, res) => {
         message: "Transaction type not found",
       });
     }
-    res.json(result[0]);
+    res.json({ transactionType: result[0] });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong :(",
@@ -71,7 +71,7 @@ export const updateTransactionType = async (req, res) => {
       "SELECT * FROM transaction_type WHERE id = ?",
       id
     );
-    res.json(transactionType[0]);
+    res.json({transactionType: transactionType[0]});
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",

@@ -1,18 +1,37 @@
-import {pool} from "../db.js";
+import { pool } from "../db.js";
 
 export const getTargetCategories = async (req, res) => {
-  try{
+  try {
     const [result] = await pool.query("SELECT * FROM target_category");
     if (result.length <= 0) {
       return res.status(401).json({
-        message: "No target categories were found"
+        message: "No target categories were found",
       });
     }
-    res.json(result);
-  }catch(error){
-      return res.status(500).json({
-        message: "Something went wrong: " + error
-      })
+    res.json({ targetCategories: result });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong: " + error,
+    });
+  }
+};
+
+export const getTargetCategoriesByUserId = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM target_category where user_id = ?",
+      req.params.userId
+    );
+    if (result.length <= 0) {
+      return res.status(401).json({
+        message: "No target categories were found",
+      });
+    }
+    res.json({ targetCategories: result });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong: " + error,
+    });
   }
 };
 
@@ -27,7 +46,7 @@ export const getTargetCategory = async (req, res) => {
         message: "Target category not found",
       });
     }
-    res.json(result[0]);
+    res.json({ targetCategory: result[0] });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong :(",
@@ -45,14 +64,14 @@ export const createTargetCategory = async (req, res) => {
     res.send({
       id: result.insertId,
       name,
-      userId
+      userId,
     });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",
     });
   }
-}
+};
 
 export const updateTargetCategory = async (req, res) => {
   try {
@@ -68,8 +87,11 @@ export const updateTargetCategory = async (req, res) => {
       });
     }
 
-    const [targetCategory] = await pool.query("SELECT * FROM target_category WHERE id = ?", id);
-    res.json(targetCategory[0]);
+    const [targetCategory] = await pool.query(
+      "SELECT * FROM target_category WHERE id = ?",
+      id
+    );
+    res.json({ targetCategory: targetCategory[0] });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",

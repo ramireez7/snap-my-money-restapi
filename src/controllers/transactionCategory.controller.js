@@ -8,7 +8,26 @@ export const getTransactionCategories = async (req, res) => {
         message: "No transaction categories were found",
       });
     }
-    res.json(result);
+    res.json({ transactionCategories: result });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong: " + error,
+    });
+  }
+};
+
+export const getTransactionCategoriesByUserId = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT * FROM transaction_category where user_id = ?",
+      req.params.userId
+    );
+    if (result.length <= 0) {
+      return res.status(401).json({
+        message: "No transaction categories were found",
+      });
+    }
+    res.json({ transactionCategories: result });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong: " + error,
@@ -27,7 +46,7 @@ export const getTransactionCategory = async (req, res) => {
         message: "Transaction category not found",
       });
     }
-    res.json(result[0]);
+    res.json({ transactionCategory: result[0] });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong :(",
@@ -72,7 +91,7 @@ export const updateTransactionCategory = async (req, res) => {
       "SELECT * FROM transaction_category WHERE id = ?",
       id
     );
-    res.json(transactionCategory[0]);
+    res.json({ transactionCategory: transactionCategory[0] });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",

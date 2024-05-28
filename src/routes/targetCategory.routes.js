@@ -3,6 +3,7 @@ import {
   createTargetCategory,
   deleteTargetCategory,
   getTargetCategories,
+  getTargetCategoriesByUserId,
   getTargetCategory,
   updateTargetCategory,
 } from "../controllers/targetCategory.controller.js";
@@ -10,6 +11,8 @@ import {
 const router = Router();
 
 router.get("/targetCategories", getTargetCategories);
+
+router.get("/targetCategories/user/:userId", getTargetCategoriesByUserId);
 
 router.get("/targetCategories/:id", getTargetCategory);
 
