@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 
 export const getTransactionTypes = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM transaction_type");
+    const [result] = await pool.query("SELECT * FROM transaction_type ORDER BY name ASC");
     if (result.length <= 0) {
       return res.status(401).json({
         message: "No transaction categories were found",
@@ -90,7 +90,9 @@ export const deleteTransactionType = async (req, res) => {
         message: "Transaction type not found",
       });
     }
-    res.status(204);
+    return res.status(200).json({
+      message: "Transaction deleted successfully",
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",

@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 
 export const getTargetCategories = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM target_category");
+    const [result] = await pool.query("SELECT * FROM target_category ORDER BY name ASC");
     if (result.length <= 0) {
       return res.status(401).json({
         message: "No target categories were found",
@@ -19,7 +19,7 @@ export const getTargetCategories = async (req, res) => {
 export const getTargetCategoriesByUserId = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM target_category where user_id = ?",
+      "SELECT * FROM target_category where user_id = ? ORDER BY name ASC",
       req.params.userId
     );
     if (result.length <= 0) {
@@ -56,15 +56,15 @@ export const getTargetCategory = async (req, res) => {
 
 export const createTargetCategory = async (req, res) => {
   try {
-    const { name, userId } = req.body;
+    const { name, user_id } = req.body;
     const [result] = await pool.query(
       "INSERT INTO target_category (name, user_id) VALUES (?, ?)",
-      [name, userId]
+      [name, user_id]
     );
     res.send({
       id: result.insertId,
       name,
-      userId,
+      user_id,
     });
   } catch (error) {
     return res.status(500).json({
@@ -76,10 +76,10 @@ export const createTargetCategory = async (req, res) => {
 export const updateTargetCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, userId } = req.body;
+    const { name, user_id } = req.body;
     const [result] = await pool.query(
       "UPDATE target_category SET name = IFNULL(?, name), user_id = IFNULL(?, user_id) WHERE id = ?",
-      [name, userId, id]
+      [name, user_id, id]
     );
     if (result.affectedRows <= 0) {
       return res.status(404).json({
@@ -110,7 +110,9 @@ export const deleteTargetCategory = async (req, res) => {
         message: "Target category not found",
       });
     }
-    res.status(204);
+    return res.status(200).json({
+      message: "Transaction deleted successfully",
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",

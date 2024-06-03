@@ -11,7 +11,7 @@ CREATE TABLE user (
     email VARCHAR(254) NOT NULL,
     password VARCHAR(255) NOT NULL,
     avatar VARCHAR(255) NULL,
-    balance DECIMAL DEFAULT NULL,
+    balance DECIMAL(10,2) NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
@@ -68,20 +68,13 @@ CREATE TABLE transaction (
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
     user_id INT(11) NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
-    transaction_type_id INT(11) NULL,
+    transaction_type_id INT(11) NOT NULL,
     transaction_category_id INT(11) NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (transaction_type_id) REFERENCES transaction_type (id),
     FOREIGN KEY (transaction_category_id) REFERENCES transaction_category (id)
 );
-
-INSERT INTO transaction (name, user_id, amount, transaction_type_id, transaction_category_id)
-VALUES
-('Compra de libros', 1, 25.00, 1, 9),
-('Pago de servicios', 1, 80.00, 1, 6),
-('Ingreso por freelance', 1, 300.00, 2, NULL);
-
 
 /* TABLE target_category */
 
@@ -114,9 +107,3 @@ VALUES ('Viajes', NULL),
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (target_category_id) REFERENCES target_category (id)
   );
-
-INSERT INTO target (name, user_id, target_category_id, current_amount, target_amount)
-VALUES
-('Viaje al extranjero', 1, 1, 200.00, 1000.00),
-('Fondo de emergencia', 1, 4, 50.00, 500.00),
-('Ahorro para un nuevo portátil', 1, 6, 100.00, 800.00);
