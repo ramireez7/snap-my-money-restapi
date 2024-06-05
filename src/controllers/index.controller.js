@@ -7,7 +7,7 @@ export const ping = async (req, res) => {
     res.json(result[0]);
   } catch (error) {
     return res.status(500).json({
-      message: "Something went wrong - " + process.env.PORT + " -" +process.env.DB_HOST + " -" +process.env.DB_PORT + " -" +process.env.DB_USER + " -" +process.env.DB_PASSWORD + " -" +process.env.DB_DATABASE
+      message: "Something went wrong - " + error,
     });
   }
 };

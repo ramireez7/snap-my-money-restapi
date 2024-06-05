@@ -11,18 +11,36 @@ CREATE TABLE user (
     email VARCHAR(254) NOT NULL,
     password VARCHAR(255) NOT NULL,
     avatar VARCHAR(255) NULL,
-    balance DECIMAL(10,2) NOT NULL DEFAULT 0,
+    balance DECIMAL(10, 2) NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 
 INSERT INTO
-    user (name, email, password, avatar, balance)
-VALUES ('Daniel', 'daniel.ramirez.tomas@gmail.com', '$2a$10$4FfIY0G3Oj.4nuzmoV3YZeszW2dTli5cdd/Wd1QUbU5T1cp142QMm', NULL, NULL),
-    ('Marcos', 'marcos@gmail.com', '$2a$10$9jJcSslPBfPWEXGG8Vw/7.vE9kZK/hStMokSmMNCzKId.bttGzFFS', NULL, NULL),
-    ('Noah', 'noah@gmail.com', '$2a$10$pM2.GuQ/qfXNauXVHm6BFed5xe8.oyD8Tn3Ah01bHLwQTTFWdFmMq', NULL, NULL),
-    ('Alejandro', 'alejandro@gmail.com', '$2a$10$qXeFCtfvo1tPsGIbULn52.eW6.gg16ABN.Uhviy7N4j46KbcNRgEW', NULL, NULL);
-    
-
+    user (name, email, password, avatar)
+VALUES (
+        'Daniel',
+        'daniel.ramirez.tomas@gmail.com',
+        '$2a$10$4FfIY0G3Oj.4nuzmoV3YZeszW2dTli5cdd/Wd1QUbU5T1cp142QMm',
+        NULL
+    ),
+    (
+        'Marcos',
+        'marcos@gmail.com',
+        '$2a$10$9jJcSslPBfPWEXGG8Vw/7.vE9kZK/hStMokSmMNCzKId.bttGzFFS',
+        NULL
+    ),
+    (
+        'Noah',
+        'noah@gmail.com',
+        '$2a$10$pM2.GuQ/qfXNauXVHm6BFed5xe8.oyD8Tn3Ah01bHLwQTTFWdFmMq',
+        NULL
+    ),
+    (
+        'Alejandro',
+        'alejandro@gmail.com',
+        '$2a$10$qXeFCtfvo1tPsGIbULn52.eW6.gg16ABN.Uhviy7N4j46KbcNRgEW',
+        NULL
+    );
 /* TABLE transaction_type */
 CREATE TABLE transaction_type (
     id INT(11) NOT NULL AUTO_INCREMENT,
@@ -95,15 +113,15 @@ VALUES ('Viajes', NULL),
     ('Inmuebles', NULL),
     ('Otros', NULL);
 
-  CREATE TABLE target (
+CREATE TABLE target (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
     user_id INT(11) NOT NULL,
     target_category_id INT(11) DEFAULT NULL,
-    current_amount DECIMAL(10,2),
+    current_amount DECIMAL(10, 2),
     target_amount DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (target_category_id) REFERENCES target_category (id)
-  );
+);
