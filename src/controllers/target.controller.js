@@ -78,10 +78,10 @@ export const createTarget = async (req, res) => {
 export const updateTarget = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, user_id, target_category_id, target_amount } = req.body;
+    const { name, user_id, target_category_id, current_amount, target_amount } = req.body;
     const [result] = await pool.query(
-      "UPDATE target SET name = IFNULL(?, name), user_id = IFNULL(?, user_id), target_category_id = IFNULL(?, target_category_id), target_amount = IFNULL(?, target_amount) WHERE id = ?",
-      [name, user_id, target_category_id, target_amount, id]
+      "UPDATE target SET name = IFNULL(?, name), user_id = IFNULL(?, user_id), target_category_id = IFNULL(?, target_category_id), current_amount = IFNULL(?, current_amount), target_amount = IFNULL(?, target_amount) WHERE id = ?",
+      [name, user_id, target_category_id, current_amount, target_amount, id]
     );
     if (result.affectedRows <= 0) {
       return res.status(404).json({
