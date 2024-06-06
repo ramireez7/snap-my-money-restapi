@@ -91,7 +91,46 @@ export const updateTarget = async (req, res) => {
 
     const [target] = await pool.query("SELECT * FROM target WHERE id = ?", id);
 
-    res.json({ taget: target[0] });
+    res.json({ target: target[0] });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
+};
+
+export const updateTargetAmount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, remove } =
+      req.body;
+    if(remove == 0){
+      const [result] = await pool.query(
+        "UPDATE target SET current_amount = current_amount + ? WHERE id = ?",
+        [amount, id]
+      );
+
+      if (result.affectedRows <= 0) {
+        return res.status(404).json({
+          message: "Target not found",
+        });
+      }
+    }else{
+      const [result] = await pool.query(
+        "UPDATE target SET current_amount = current_amount - ? WHERE id = ?",
+        [amount, id]
+      );
+
+      if (result.affectedRows <= 0) {
+        return res.status(404).json({
+          message: "Target not found",
+        });
+      }
+    }
+
+    const [target] = await pool.query("SELECT * FROM target WHERE id = ?", id);
+
+    res.json({ target: target[0] });
   } catch (error) {
     return res.status(500).json({
       message: "Something went wrong",
