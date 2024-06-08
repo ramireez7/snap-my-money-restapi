@@ -41,13 +41,13 @@ const verifyTokenMiddleware = (req, res, next) => {
 };
 
 app.use(indexRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api", userRoutes);
-app.use("/api", verifyTokenMiddleware, targetRoutes);
-app.use("/api", verifyTokenMiddleware, targetCategoryRoutes);
-app.use("/api", verifyTokenMiddleware, transactionRoutes);
-app.use("/api", verifyTokenMiddleware, transactionCategoryRoutes);
-app.use("/api", verifyTokenMiddleware, transactionTypeRoutes);
+app.use("/auth", authRoutes);
+app.use(userRoutes);
+app.use(verifyTokenMiddleware, targetRoutes);
+app.use(verifyTokenMiddleware, targetCategoryRoutes);
+app.use(verifyTokenMiddleware, transactionRoutes);
+app.use(verifyTokenMiddleware, transactionCategoryRoutes);
+app.use(verifyTokenMiddleware, transactionTypeRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({
