@@ -16,7 +16,10 @@ dotenv.config();
 
 app.use(
   cors({
-    origin: "http://localhost:8100",
+    origin: "*", // Permitir todas las solicitudes de origen
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 

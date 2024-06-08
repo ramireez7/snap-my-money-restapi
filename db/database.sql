@@ -63,97 +63,87 @@
         FOREIGN KEY (user_id) REFERENCES user (id)
     );
 
-    INSERT INTO
-        transaction_category (name, user_id)
-    VALUES ('Comida y bebida', NULL),
-        ('Transporte', NULL),
-        ('Vivienda', NULL),
-        ('Vehículos', NULL),
-        ('Vida y entretenimiento',NULL),
-        ('Comunicaciones', NULL),
-        ('PC', NULL),
-        ('Inversiones', NULL),
-        ('Compras', NULL),
-        ('Salario', NULL),
-        ('Alquiler', NULL),
-        ('Alimentación', NULL),
-        ('Transporte', NULL),
-        ('Entretenimiento', NULL),
-        ('Educación', NULL),
-        ('Salud', NULL),
-        ('Impuestos', NULL),
-        ('Seguros', NULL),
-        ('Ahorros', NULL),
-        ('Inversiones', NULL),
-        ('Regalos', NULL),
-        ('Ropa', NULL),
-        ('Hogar', NULL),
-        ('Tecnología', NULL),
-        ('Viajes', NULL),
-        ('Comunicaciones', NULL),
-        ('Servicios públicos', NULL),
-        ('Mascotas', NULL),
-        ('Cuidado personal', NULL);
+    INSERT INTO transaction_category (name, user_id) VALUES 
+    ('Comida y bebida', NULL),
+    ('Transporte', NULL),
+    ('Vivienda', NULL),
+    ('Vehículos', NULL),
+    ('Vida y entretenimiento',NULL),
+    ('Comunicaciones', NULL),
+    ('PC', NULL),
+    ('Inversiones', NULL),
+    ('Compras', NULL),
+    ('Salario', NULL),
+    ('Alquiler', NULL),
+    ('Alimentación', NULL),
+    ('Educación', NULL),
+    ('Salud', NULL),
+    ('Impuestos', NULL),
+    ('Seguros', NULL),
+    ('Ahorros', NULL),
+    ('Regalos', NULL),
+    ('Ropa', NULL),
+    ('Hogar', NULL),
+    ('Tecnología', NULL),
+    ('Viajes', NULL),
+    ('Servicios públicos', NULL),
+    ('Mascotas', NULL),
+    ('Cuidado personal', NULL);
 
-    /* TABLE transaction */
+-- TABLE transaction
+CREATE TABLE transaction (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(45) NOT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    user_id INT(11) NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    transaction_type_id INT(11) NOT NULL,
+    transaction_category_id INT(11) NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (transaction_type_id) REFERENCES transaction_type (id),
+    FOREIGN KEY (transaction_category_id) REFERENCES transaction_category (id)
+);
 
-    CREATE TABLE transaction (
-        id INT(11) NOT NULL AUTO_INCREMENT,
-        name VARCHAR(45) NOT NULL,
-        created DATETIME DEFAULT CURRENT_TIMESTAMP,
-        user_id INT(11) NOT NULL,
-        amount DECIMAL(10, 2) NOT NULL,
-        transaction_type_id INT(11) NOT NULL,
-        transaction_category_id INT(11) NULL,
-        PRIMARY KEY (id),
-        FOREIGN KEY (user_id) REFERENCES user (id),
-        FOREIGN KEY (transaction_type_id) REFERENCES transaction_type (id),
-        FOREIGN KEY (transaction_category_id) REFERENCES transaction_category (id)
-    );
+-- Transacciones para Daniel
+INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id) VALUES 
+    ('Compra en el supermercado', '2024-06-01 10:15:30', 1, 50.00, 1, 1), -- Comida y bebida
+    ('Ingreso salario', '2024-06-05 08:30:00', 1, 2000.00, 2, 10), -- Salario
+    ('Cena en restaurante', '2024-05-20 19:45:00', 1, 80.00, 1, 1), -- Comida y bebida
+    ('Compra de libros', '2024-05-10 16:20:45', 1, 30.00, 1, 13), -- Educación
+    ('Cine', '2024-04-15 21:00:00', 1, 15.00, 1, 5), -- Vida y entretenimiento
+    ('Compra de tecnología', '2024-06-07 14:25:30', 1, 200.00, 1, 21), -- Tecnología
+    ('Venta de coche', '2024-03-30 12:00:00', 1, 5000.00, 2, 4); -- Vehículos
 
-    -- Insertar más transacciones para el usuario Daniel
-INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id)
-VALUES 
-    ('Compra en el supermercado', '2024-06-01 10:15:30', 1, 50.00, 1, 1),
-    ('Ingreso salario', '2024-06-05 08:30:00', 1, 2000.00, 2, NULL),
-    ('Cena en restaurante', '2024-05-20 19:45:00', 1, 80.00, 1, 5),
-    ('Compra de libros', '2024-05-10 16:20:45', 1, 30.00, 1, 16),
-    ('Cine', '2024-04-15 21:00:00', 1, 15.00, 1, 5),
-    ('Compra de electrónica', '2024-06-07 14:25:30', 1, 200.00, 1, 24),
-    ('Venta de coche', '2024-03-30 12:00:00', 1, 5000.00, 2, NULL);
+-- Transacciones para Marcos
+INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id) VALUES 
+    ('Compra de gasolina', '2024-06-01 09:00:00', 2, 40.00, 1, 2), -- Transporte
+    ('Pago del alquiler', '2024-06-02 10:00:00', 2, 1200.00, 1, 11), -- Vivienda
+    ('Venta de libros usados', '2024-05-15 15:45:00', 2, 50.00, 2, 13), -- Educación
+    ('Cena con amigos', '2024-05-18 20:30:00', 2, 100.00, 1, 1), -- Comida y bebida
+    ('Pago del gimnasio', '2024-04-10 07:00:00', 2, 30.00, 1, 14), -- Salud
+    ('Compra de ropa', '2024-06-06 13:00:00', 2, 120.00, 1, 19), -- Ropa
+    ('Reembolso de impuestos', '2024-03-25 11:15:00', 2, 300.00, 2, 15); -- Impuestos
 
--- Insertar más transacciones para el usuario Marcos
-INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id)
-VALUES 
-    ('Compra de gasolina', '2024-06-01 09:00:00', 2, 40.00, 1, 2),
-    ('Pago del alquiler', '2024-06-02 10:00:00', 2, 1200.00, 1, 11),
-    ('Venta de libros usados', '2024-05-15 15:45:00', 2, 50.00, 2, NULL),
-    ('Cena con amigos', '2024-05-18 20:30:00', 2, 100.00, 1, 5),
-    ('Pago del gimnasio', '2024-04-10 07:00:00', 2, 30.00, 1, 14),
-    ('Compra de ropa', '2024-06-06 13:00:00', 2, 120.00, 1, 22),
-    ('Reembolso de impuestos', '2024-03-25 11:15:00', 2, 300.00, 2, NULL);
+-- Transacciones para Noah
+INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id) VALUES 
+    ('Pago de transporte público', '2024-06-01 08:00:00', 3, 20.00, 1, 2), -- Transporte
+    ('Ingreso por freelance', '2024-06-03 17:00:00', 3, 500.00, 2, 10), -- Salario
+    ('Compra de medicamentos', '2024-05-21 09:30:00', 3, 40.00, 1, 14), -- Salud
+    ('Pago de seguro de salud', '2024-05-12 14:00:00', 3, 150.00, 1, 16), -- Seguros
+    ('Compra de libros', '2024-04-11 16:45:00', 3, 60.00, 1, 13), -- Educación
+    ('Pago de servicios públicos', '2024-06-07 18:00:00', 3, 100.00, 1, 23), -- Servicios públicos
+    ('Ingreso por devolución de producto', '2024-03-28 12:30:00', 3, 75.00, 2, 9); -- Compras
 
--- Insertar más transacciones para el usuario Noah
-INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id)
-VALUES 
-    ('Pago de transporte público', '2024-06-01 08:00:00', 3, 20.00, 1, 2),
-    ('Ingreso por freelance', '2024-06-03 17:00:00', 3, 500.00, 2, NULL),
-    ('Compra de medicamentos', '2024-05-21 09:30:00', 3, 40.00, 1, 16),
-    ('Pago de seguro de salud', '2024-05-12 14:00:00', 3, 150.00, 1, 19),
-    ('Compra de libros', '2024-04-11 16:45:00', 3, 60.00, 1, 16),
-    ('Pago de servicios públicos', '2024-06-07 18:00:00', 3, 100.00, 1, 27),
-    ('Ingreso por devolución de producto', '2024-03-28 12:30:00', 3, 75.00, 2, NULL);
-
--- Insertar más transacciones para el usuario Alejandro
-INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id)
-VALUES 
-    ('Compra de muebles', '2024-06-01 11:00:00', 4, 300.00, 1, 11),
-    ('Ingreso por venta de artículo', '2024-06-05 10:30:00', 4, 100.00, 2, NULL),
-    ('Pago del servicio de internet', '2024-05-20 13:15:00', 4, 50.00, 1, 21),
-    ('Compra de ropa', '2024-05-10 14:45:00', 4, 80.00, 1, 22),
-    ('Compra de electrodomésticos', '2024-04-16 15:30:00', 4, 250.00, 1, 24),
-    ('Ingreso por trabajo temporal', '2024-06-08 09:45:00', 4, 600.00, 2, NULL),
-    ('Pago de vacaciones', '2024-03-22 18:30:00', 4, 1000.00, 1, 25);
+-- Transacciones para Alejandro
+INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id) VALUES 
+    ('Compra de muebles', '2024-06-01 11:00:00', 4, 300.00, 1, 20), -- Hogar
+    ('Ingreso por venta de artículo', '2024-06-05 10:30:00', 4, 100.00, 2, 9), -- Compras
+    ('Pago del servicio de internet', '2024-05-20 13:15:00', 4, 50.00, 1, 6), -- Comunicaciones
+    ('Compra de ropa', '2024-05-10 14:45:00', 4, 80.00, 1, 19), -- Ropa
+    ('Compra de electrodomésticos', '2024-04-16 15:30:00', 4, 250.00, 1, 21), -- Tecnología
+    ('Ingreso por trabajo temporal', '2024-06-08 09:45:00', 4, 600.00, 2, 10), -- Salario
+    ('Pago de vacaciones', '2024-03-22 18:30:00', 4, 1000.00, 1, 22); -- Viajes
 
 -- Actualizar el balance en la tabla user para cada usuario
 UPDATE user AS u
