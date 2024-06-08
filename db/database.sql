@@ -112,40 +112,56 @@
     );
 
     -- Insertar más transacciones para el usuario Daniel
-    INSERT INTO transaction (name, user_id, amount, transaction_type_id, transaction_category_id)
-    VALUES ('Compra en el supermercado', 1, 50.00, 1, 1),
-        ('Ingreso salario', 1, 2000.00, 2, NULL),
-        ('Cena en restaurante', 1, 80.00, 1, 5),
-        ('Compra de libros', 1, 30.00, 1, 16);
+INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id)
+VALUES 
+    ('Compra en el supermercado', '2024-06-01 10:15:30', 1, 50.00, 1, 1),
+    ('Ingreso salario', '2024-06-05 08:30:00', 1, 2000.00, 2, NULL),
+    ('Cena en restaurante', '2024-05-20 19:45:00', 1, 80.00, 1, 5),
+    ('Compra de libros', '2024-05-10 16:20:45', 1, 30.00, 1, 16),
+    ('Cine', '2024-04-15 21:00:00', 1, 15.00, 1, 5),
+    ('Compra de electrónica', '2024-06-07 14:25:30', 1, 200.00, 1, 24),
+    ('Venta de coche', '2024-03-30 12:00:00', 1, 5000.00, 2, NULL);
 
-    -- Insertar más transacciones para el usuario Marcos
-    INSERT INTO transaction (name, user_id, amount, transaction_type_id, transaction_category_id)
-    VALUES ('Compra de gasolina', 2, 40.00, 1, 2),
-        ('Pago del alquiler', 2, 1200.00, 1, 9),
-        ('Venta de libros usados', 2, 50.00, 2, NULL),
-        ('Cena con amigos', 2, 100.00, 1, 5);
+-- Insertar más transacciones para el usuario Marcos
+INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id)
+VALUES 
+    ('Compra de gasolina', '2024-06-01 09:00:00', 2, 40.00, 1, 2),
+    ('Pago del alquiler', '2024-06-02 10:00:00', 2, 1200.00, 1, 11),
+    ('Venta de libros usados', '2024-05-15 15:45:00', 2, 50.00, 2, NULL),
+    ('Cena con amigos', '2024-05-18 20:30:00', 2, 100.00, 1, 5),
+    ('Pago del gimnasio', '2024-04-10 07:00:00', 2, 30.00, 1, 14),
+    ('Compra de ropa', '2024-06-06 13:00:00', 2, 120.00, 1, 22),
+    ('Reembolso de impuestos', '2024-03-25 11:15:00', 2, 300.00, 2, NULL);
 
-    -- Insertar más transacciones para el usuario Noah
-    INSERT INTO transaction (name, user_id, amount, transaction_type_id, transaction_category_id)
-    VALUES ('Pago de transporte público', 3, 20.00, 1, 2),
-        ('Ingreso por freelance', 3, 500.00, 2, NULL),
-        ('Compra de medicamentos', 3, 40.00, 1, 7),
-        ('Pago de seguro de salud', 3, 150.00, 1, 19);
+-- Insertar más transacciones para el usuario Noah
+INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id)
+VALUES 
+    ('Pago de transporte público', '2024-06-01 08:00:00', 3, 20.00, 1, 2),
+    ('Ingreso por freelance', '2024-06-03 17:00:00', 3, 500.00, 2, NULL),
+    ('Compra de medicamentos', '2024-05-21 09:30:00', 3, 40.00, 1, 16),
+    ('Pago de seguro de salud', '2024-05-12 14:00:00', 3, 150.00, 1, 19),
+    ('Compra de libros', '2024-04-11 16:45:00', 3, 60.00, 1, 16),
+    ('Pago de servicios públicos', '2024-06-07 18:00:00', 3, 100.00, 1, 27),
+    ('Ingreso por devolución de producto', '2024-03-28 12:30:00', 3, 75.00, 2, NULL);
 
-    -- Insertar más transacciones para el usuario Alejandro
-    INSERT INTO transaction (name, user_id, amount, transaction_type_id, transaction_category_id)
-    VALUES ('Compra de muebles', 4, 300.00, 1, 11),
-        ('Ingreso por venta de artículo', 4, 100.00, 2, NULL),
-        ('Pago del servicio de internet', 4, 50.00, 1, 21),
-        ('Compra de ropa', 4, 80.00, 1, 17);
+-- Insertar más transacciones para el usuario Alejandro
+INSERT INTO transaction (name, created, user_id, amount, transaction_type_id, transaction_category_id)
+VALUES 
+    ('Compra de muebles', '2024-06-01 11:00:00', 4, 300.00, 1, 11),
+    ('Ingreso por venta de artículo', '2024-06-05 10:30:00', 4, 100.00, 2, NULL),
+    ('Pago del servicio de internet', '2024-05-20 13:15:00', 4, 50.00, 1, 21),
+    ('Compra de ropa', '2024-05-10 14:45:00', 4, 80.00, 1, 22),
+    ('Compra de electrodomésticos', '2024-04-16 15:30:00', 4, 250.00, 1, 24),
+    ('Ingreso por trabajo temporal', '2024-06-08 09:45:00', 4, 600.00, 2, NULL),
+    ('Pago de vacaciones', '2024-03-22 18:30:00', 4, 1000.00, 1, 25);
 
-    -- Actualizar el balance en la tabla user para cada usuario
-    UPDATE user AS u
-    SET balance = (
-        SELECT COALESCE(SUM(CASE WHEN t.transaction_type_id = 2 THEN t.amount ELSE -t.amount END), 0)
-        FROM transaction AS t
-        WHERE t.user_id = u.id
-    );
+-- Actualizar el balance en la tabla user para cada usuario
+UPDATE user AS u
+SET balance = (
+    SELECT COALESCE(SUM(CASE WHEN t.transaction_type_id = 2 THEN t.amount ELSE -t.amount END), 0)
+    FROM transaction AS t
+    WHERE t.user_id = u.id
+);
 
     /* TABLE target_category */
 
